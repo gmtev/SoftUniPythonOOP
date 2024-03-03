@@ -65,3 +65,47 @@ class Profile:
 
 
 # Email Validator
+class EmailValidator:
+
+    def __init__(self, min_length: int, mails: list, domains: list):
+        self.min_length = min_length
+        self.mails = mails
+        self.domains = domains
+
+    def __is_name_valid(self, name: str) -> bool:
+        return len(name) >= self.min_length
+
+    def __is_mail_valid(self, mail: str) -> bool:
+        return mail in self.mails
+
+    def __is_domain_valid(self, domain: str) -> bool:
+        return domain in self.domains
+
+    def validate(self, email: str) -> bool:
+        username, data = email.split("@")
+        provider, domain = data.split(".")
+
+        return (self.__is_name_valid(username) and
+                self.__is_domain_valid(domain) and
+                self.__is_mail_valid(provider))
+
+
+# Account
+class Account:
+
+    def __init__(self, id: int, balance, pin: int):
+        self.__id = id
+        self.balance = balance
+        self.__pin = pin
+
+    def get_id(self, pin: int) -> int or str:
+        if pin == self.__pin:
+            return self.__id
+        return "Wrong pin"
+
+    def change_pin(self, old_pin: int, new_pin: int) -> str:
+        if old_pin == self.__pin:
+            self.__pin = new_pin
+            return "Pin changed"
+
+        return "Wrong pin"
